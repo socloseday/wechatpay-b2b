@@ -12,6 +12,5 @@ func NewClientExample(accessToken, appKey string) (*client.Client, error) {
 		BaseURL:        "https://api.weixin.qq.com",
 		TokenProvider:  accessToken,
 		AppKeyProvider: appKey,
-		HTTPClient:     nil,
 	})
 }

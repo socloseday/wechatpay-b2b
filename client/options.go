@@ -2,7 +2,6 @@ package client
 
 import (
 	"errors"
-	"net/http"
 )
 
 // Options Client 初始化参数。
@@ -13,8 +12,6 @@ type Options struct {
 	TokenProvider string
 	// AppKeyProvider 计算 pay_sig 所需的 appKey（建议按商户号维度维护不同 Client 实例）。
 	AppKeyProvider string
-	// HTTPClient 自定义 http.Client（可选）。
-	HTTPClient *http.Client
 }
 
 // NewClient 创建一个可复用的微信 API Client。
@@ -30,6 +27,5 @@ func NewClient(opts Options) (*Client, error) {
 		BaseURL:        opts.BaseURL,
 		TokenProvider:  opts.TokenProvider,
 		AppKeyProvider: opts.AppKeyProvider,
-		HTTPClient:     opts.HTTPClient,
 	}, nil
 }
