@@ -51,7 +51,7 @@ func (s *orderService) CloseOrder(ctx context.Context, req types.CloseOrderReque
 
 	paySig := s.client.GetPaySig(closeOrderURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := closeOrderURI + "?" + query.Encode()
 
@@ -95,7 +95,7 @@ func (s *orderService) GetOrder(ctx context.Context, req types.GetOrderRequest) 
 
 	paySig := s.client.GetPaySig(getOrderURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := getOrderURI + "?" + query.Encode()
 

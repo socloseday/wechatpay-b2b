@@ -46,11 +46,11 @@ func (s *balanceService) GetBalance(ctx context.Context, req types.BalanceReques
 	if req.Mchid == "" {
 		return nil, errors.New("mchid is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -60,7 +60,7 @@ func (s *balanceService) GetBalance(ctx context.Context, req types.BalanceReques
 
 	paySig := s.client.GetPaySig(getMchBalanceURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := getMchBalanceURI + "?" + query.Encode()
 
@@ -102,11 +102,11 @@ func (s *balanceService) Withdraw(ctx context.Context, req types.WithdrawRequest
 	if req.OutWithdrawNo == "" {
 		return nil, errors.New("out_withdraw_no is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -116,7 +116,7 @@ func (s *balanceService) Withdraw(ctx context.Context, req types.WithdrawRequest
 
 	paySig := s.client.GetPaySig(withdrawURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := withdrawURI + "?" + query.Encode()
 
@@ -155,11 +155,11 @@ func (s *balanceService) QueryWithdraw(ctx context.Context, req types.QueryWithd
 	if req.OutWithdrawNo == "" {
 		return nil, errors.New("out_withdraw_no is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -169,7 +169,7 @@ func (s *balanceService) QueryWithdraw(ctx context.Context, req types.QueryWithd
 
 	paySig := s.client.GetPaySig(queryWithdrawURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := queryWithdrawURI + "?" + query.Encode()
 

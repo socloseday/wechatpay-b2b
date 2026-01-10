@@ -38,8 +38,8 @@ func (s *retailService) BatchCreateRetail(ctx context.Context, req types.BatchCr
 	if len(req.RetailInfoList) == 0 {
 		return nil, errors.New("retail_info_list is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -48,7 +48,7 @@ func (s *retailService) BatchCreateRetail(ctx context.Context, req types.BatchCr
 	}
 
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	uri := batchCreateRetailURI + "?" + query.Encode()
 
 	resp, err := s.client.Do(ctx, http.MethodPost, uri, body)

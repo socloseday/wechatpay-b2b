@@ -10,19 +10,29 @@ import (
 )
 
 // PaymentService 负责构建小程序支付相关参数。
-type PaymentService struct {
-	Client *client.Client
+type PaymentService interface {
+	// BuildCombinedPaymentParams 生成合单支付参数，用于小程序 wx.requestCommonPayment。
+	BuildCombinedPaymentParams(ctx context.Context, req types.CombinedPaymentSignData) (*types.CommonPaymentParams, error)
+}
+
+type paymentService struct {
+	client *client.Client
 }
 
 const combinePayURI = "/retail/B2b/combinepay"
 
+// NewPaymentService 创建支付服务。
+func NewPaymentService(c *client.Client) PaymentService {
+	return &paymentService{client: c}
+}
+
 // BuildCombinedPaymentParams 生成合单支付参数，用于小程序 wx.requestCommonPayment。
-func (s *PaymentService) BuildCombinedPaymentParams(ctx context.Context, req types.CombinedPaymentSignData) (*types.CommonPaymentParams, error) {
-	if s.Client == nil {
+func (s *paymentService) BuildCombinedPaymentParams(ctx context.Context, req types.CombinedPaymentSignData) (*types.CommonPaymentParams, error) {
+	if s.client == nil {
 		return nil, errors.New("client is nil")
 	}
-	if s.Client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 	if len(req.CombinedOrderList) == 0 {
 		return nil, errors.New("combined_order_list is required")
@@ -36,7 +46,7 @@ func (s *PaymentService) BuildCombinedPaymentParams(ctx context.Context, req typ
 	return &types.CommonPaymentParams{
 		SignData:  string(body),
 		Mode:      "0",
-		PaySig:    s.Client.GetPaySig(combinePayURI, body),
-		Signature: s.Client.GetUserSignature(body),
+		PaySig:    s.client.GetPaySig(combinePayURI, body),
+		Signature: s.client.GetUserSignature(body),
 	}, nil
 }

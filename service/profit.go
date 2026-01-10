@@ -61,11 +61,11 @@ func (s *profitService) ProfitSharing(ctx context.Context, req types.ProfitShari
 	if len(req.Receivers) == 0 {
 		return nil, errors.New("receivers is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -75,7 +75,7 @@ func (s *profitService) ProfitSharing(ctx context.Context, req types.ProfitShari
 
 	paySig := s.client.GetPaySig(profitSharingURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := profitSharingURI + "?" + query.Encode()
 
@@ -114,11 +114,11 @@ func (s *profitService) QueryProfitSharing(ctx context.Context, req types.QueryP
 	if req.TransactionID == "" {
 		return nil, errors.New("transaction_id is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -128,7 +128,7 @@ func (s *profitService) QueryProfitSharing(ctx context.Context, req types.QueryP
 
 	paySig := s.client.GetPaySig(queryProfitSharingURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := queryProfitSharingURI + "?" + query.Encode()
 
@@ -170,11 +170,11 @@ func (s *profitService) ProfitSharingFinish(ctx context.Context, req types.Profi
 	if req.OutOrderNo == "" {
 		return nil, errors.New("out_order_no is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -184,7 +184,7 @@ func (s *profitService) ProfitSharingFinish(ctx context.Context, req types.Profi
 
 	paySig := s.client.GetPaySig(profitSharingFinishURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := profitSharingFinishURI + "?" + query.Encode()
 
@@ -232,11 +232,11 @@ func (s *profitService) ProfitSharingReturn(ctx context.Context, req types.Profi
 	if req.ReturnAmount <= 0 {
 		return nil, errors.New("return_amount is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -246,7 +246,7 @@ func (s *profitService) ProfitSharingReturn(ctx context.Context, req types.Profi
 
 	paySig := s.client.GetPaySig(profitSharingReturnURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := profitSharingReturnURI + "?" + query.Encode()
 
@@ -285,11 +285,11 @@ func (s *profitService) QueryProfitSharingReturn(ctx context.Context, req types.
 	if req.OutReturnNo == "" && req.ReturnID == "" {
 		return nil, errors.New("out_return_no or return_id is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -299,7 +299,7 @@ func (s *profitService) QueryProfitSharingReturn(ctx context.Context, req types.
 
 	paySig := s.client.GetPaySig(queryProfitSharingReturn, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := queryProfitSharingReturn + "?" + query.Encode()
 

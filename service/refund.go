@@ -49,11 +49,11 @@ func (s *refundService) CreateRefund(ctx context.Context, req types.RefundReques
 	if req.RefundAmount <= 0 {
 		return nil, errors.New("refund_amount is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -63,7 +63,7 @@ func (s *refundService) CreateRefund(ctx context.Context, req types.RefundReques
 
 	paySig := s.client.GetPaySig(createRefundURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := createRefundURI + "?" + query.Encode()
 
@@ -102,11 +102,11 @@ func (s *refundService) GetRefund(ctx context.Context, req types.GetRefundReques
 	if req.OutRefundNo == "" && req.RefundID == "" {
 		return nil, errors.New("out_refund_no or refund_id is required")
 	}
-	if s.client.TokenProvider == "" {
-		return nil, errors.New("tokenProvider is empty")
+	if s.client.GetAccessToken() == "" {
+		return nil, errors.New("accessToken is empty")
 	}
-	if s.client.AppKeyProvider == "" {
-		return nil, errors.New("appKeyProvider is empty")
+	if s.client.GetAppKey() == "" {
+		return nil, errors.New("appKey is empty")
 	}
 
 	body, err := json.Marshal(req)
@@ -116,7 +116,7 @@ func (s *refundService) GetRefund(ctx context.Context, req types.GetRefundReques
 
 	paySig := s.client.GetPaySig(getRefundURI, body)
 	query := url.Values{}
-	query.Set("access_token", s.client.TokenProvider)
+	query.Set("access_token", s.client.GetAccessToken())
 	query.Set("pay_sig", paySig)
 	uri := getRefundURI + "?" + query.Encode()
 
