@@ -47,9 +47,9 @@ func (c *Client) GetPaySig(uri string, body []byte) string {
 	return GetPaySig(uri, body, c.appKey)
 }
 
-// GetUserSignature 计算用户态签名，算法为 HMAC-SHA256(appKey, body)。
-func (c *Client) GetUserSignature(body []byte) string {
-	return GetUserSignature(body, c.appKey)
+// GetUserSignature 计算用户态签名，算法为 HMAC-SHA256(sessionKey, body)。
+func (c *Client) GetUserSignature(body []byte, sessionKey string) string {
+	return GetUserSignature(body, sessionKey)
 }
 
 // BuildURIWithAuth 构建带 access_token 参数的 URI。
@@ -74,9 +74,9 @@ func GetPaySig(uri string, body []byte, appKey string) string {
 	return hmacHex(appKey, msg)
 }
 
-// GetUserSignature 计算用户态签名，算法为 HMAC-SHA256(appKey, body)。
-func GetUserSignature(body []byte, appKey string) string {
-	return hmacHex(appKey, string(body))
+// GetUserSignature 计算用户态签名，算法为 HMAC-SHA256(sessionKey, body)。
+func GetUserSignature(body []byte, sessionKey string) string {
+	return hmacHex(sessionKey, string(body))
 }
 
 func hmacHex(key, msg string) string {
